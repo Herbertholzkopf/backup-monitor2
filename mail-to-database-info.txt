@@ -1,0 +1,8 @@
+#################################
+# Ausführbar machen:
+chmod +x /var/www/backup-monitor2/mail-to-database.py
+
+
+#################################
+# ausführen:
+/var/www/backup-monitor2/mail-to-database.py

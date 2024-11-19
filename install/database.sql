@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS mails (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    sender_email VARCHAR(255) NOT NULL,
+    date DATETIME NOT NULL,
+    subject TEXT,
+    content TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
