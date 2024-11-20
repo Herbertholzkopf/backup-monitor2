@@ -104,12 +104,28 @@ server {
     listen 80;
     server_name _;
     root /var/www/backup-monitor2;
-    index index.php;
+    index index.php index.html;
 
     location / {
-        try_files \$uri \$uri/ /index.php?\$args;
+        try_files $uri $uri/ /index.php?$args;
     }
 
+    # Einbundung von php
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_pass unix:/run/php/php7.4-fpm.sock; # Pfad auf die richige Version anpassen
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+    # Zugriff auf sensible Dateien verhindern (z.B. .htaccess)
+    location ~ /\.(ht|git) {
+        deny all;
+    }
+
+    # Logging
+    error_log /var/log/nginx/backup-monitor2.error.log;
+    access_log /var/log/nginx/backup-monitor2.access.log;
 }
 EOF
 
