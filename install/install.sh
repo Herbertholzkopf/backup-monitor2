@@ -62,14 +62,14 @@ echo -e "${GREEN}MySQL Root-Passwort erfolgreich gesetzt.${NC}"
 
 
 # Einrichtung der MySQL Datenbank
-echo -e "${YELLOW}Erstelle Datenbank und Benutzer...${NC}"
+echo -e "${YELLOW}Erstelle Datenbank "backup_monitor2" und Benutzer "backup_user"...${NC}"
 read -s -p "Backup-Monitor Datenbank-Benutzer Passwort: " dbpass
 echo ""
 
 if ! mysql --user=root --password="${mysqlpass}" <<EOF
-CREATE DATABASE IF NOT EXISTS backup_monitor CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER IF NOT EXISTS 'backup_monitor'@'localhost' IDENTIFIED BY '${dbpass}';
-GRANT ALL PRIVILEGES ON backup_monitor.* TO 'backup_monitor'@'localhost';
+CREATE DATABASE IF NOT EXISTS backup_monitor2 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'backup_user'@'localhost' IDENTIFIED BY '${dbpass}';
+GRANT ALL PRIVILEGES ON backup_monitor2.* TO 'backup_user'@'localhost';
 FLUSH PRIVILEGES;
 EOF
 then
@@ -132,4 +132,8 @@ systemctl restart nginx
 
 
 echo -e "${GREEN}Installation abgeschlossen!${NC}"
-echo -e "${YELLOW}Mit der Einrichtung kann nun im Browser fortgefahren werden: http://ihre-domain.de/ bzw. http://ihre-domain.de/settings
+echo -e "${YELLOW}Mit der Einrichtung kann nun im Browser fortgefahren werden: http://ihre-domain.de/ bzw. http://ihre-domain.de/settings"
+
+
+# Backup Datenbank, Benutzer und Kennwort müssen noch in die /config/database.py eingetragen werden
+# Mail-Zugangsdaten müssen noch unter /config/mail.py eingetragen werden
