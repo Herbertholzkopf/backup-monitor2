@@ -77,6 +77,20 @@ then
     exit 1
 fi
 
+# Importiere die Datenbankstruktur
+echo -e "${YELLOW}Importiere Datenbankstruktur...${NC}"
+if [ -f "./database.sql" ]; then
+    if mysql --user=root --password="${mysqlpass}" backup_monitor2 < database.sql; then
+        echo -e "${GREEN}Datenbankstruktur erfolgreich importiert.${NC}"
+    else
+        echo -e "${RED}Fehler beim Importieren der Datenbankstruktur.${NC}"
+        exit 1
+    fi
+else
+    echo -e "${RED}database.sql nicht gefunden. Bitte stellen Sie sicher, dass die Datei im gleichen Verzeichnis liegt.${NC}"
+    exit 1
+fi
+
 echo -e "${GREEN}Datenbank und Benutzer erfolgreich erstellt.${NC}"
 
 
@@ -95,7 +109,11 @@ else
 fi
 
 # Rechte des Verzeichnis anpassen
-chown -R www-data:www-data /var/www/backup-monitor/public/install
+chown -R www-data:www-data /var/www/backup-monitor2
+chmod -R 755 /var/www/backup-monitor
+chown -R www-data:adm /var/www/backup-monitor2/log
+chmod 750 /var/www/backup-monitor2/log
+chmod 640 /var/www/backup-monitor2/log/*
 
 # Nginx Konfiguration erstellen
 echo -e "${YELLOW}Konfiguriere Nginx...${NC}"
@@ -124,8 +142,8 @@ server {
     }
 
     # Logging
-    error_log /var/log/nginx/backup-monitor2.error.log;
-    access_log /var/log/nginx/backup-monitor2.access.log;
+    error_log /var/www/backup-monitor2/log/error.log;
+    access_log /var/www/backup-monitor2/log/access.log;
 }
 EOF
 
@@ -140,10 +158,10 @@ systemctl restart nginx
 
 ## Cron-Jobs einrichten
 #echo -e "${YELLOW}Richte Cron-Jobs ein...${NC}"
-#cat > /etc/cron.d/backup-monitor <<EOF
+#cat > /etc/cron.d/backup-monitor2 <<EOF
 ## Backup-Monitor Cron Jobs
-#*/5 * * * * www-data php /var/www/backup-monitor/cron/fetch_mails.php
-#2-59/5 * * * * www-data php /var/www/backup-monitor/cron/analyze_mails.php
+#*/5 * * * * www-data php /var/www/backup-monitor2/cron/fetch_mails.php
+#2-59/5 * * * * www-data php /var/www/backup-monitor2/cron/analyze_mails.php
 #EOF
 
 
