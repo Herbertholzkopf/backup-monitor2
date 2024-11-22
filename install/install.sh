@@ -77,21 +77,38 @@ then
     exit 1
 fi
 
-# Importiere die Datenbankstruktur
-echo -e "${YELLOW}Importiere Datenbankstruktur...${NC}"
-if [ -f "./database.sql" ]; then
-    if mysql --user=root --password="${mysqlpass}" backup_monitor2 < database.sql; then
+
+
+# Verzeichnis für das Projekt erstellen
+echo -e "${YELLOW}Erstelle Projekt-Verzeichnis...${NC}"
+mkdir -p /var/www/backup-monitor2
+
+# Projekt von GitHub klonen
+echo -e "${YELLOW}Klone Git Repository...${NC}"
+if git clone https://github.com/Herbertholzkopf/backup-monitor2.git /var/www/backup-monitor2; then
+    echo -e "${GREEN}Repository erfolgreich geklont${NC}"
+else
+    echo -e "${RED}Fehler beim Klonen des Repositories${NC}"
+    exit 1
+fi
+
+
+
+# Importiere die Datenbankstruktur (muss nach dem Klonen passieren, da sonst die database.sql noch nicht existiert)
+if [ -f "/var/www/backup-monitor2/install/database.sql" ]; then
+    if mysql --user=root --password="${mysqlpass}" backup_monitor2 < /var/www/backup-monitor2/install/database.sql; then
         echo -e "${GREEN}Datenbankstruktur erfolgreich importiert.${NC}"
     else
         echo -e "${RED}Fehler beim Importieren der Datenbankstruktur.${NC}"
         exit 1
     fi
 else
-    echo -e "${RED}database.sql nicht gefunden. Bitte stellen Sie sicher, dass die Datei im gleichen Verzeichnis liegt.${NC}"
+    echo -e "${RED}database.sql nicht gefunden unter /var/www/backup-monitor2/install/database.sql${NC}"
     exit 1
 fi
 
 echo -e "${GREEN}Datenbank und Benutzer erfolgreich erstellt.${NC}"
+
 
 
 
