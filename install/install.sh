@@ -112,19 +112,6 @@ echo -e "${GREEN}Datenbank und Benutzer erfolgreich erstellt.${NC}"
 
 
 
-# Verzeichnis für das Projekt erstellen
-echo -e "${YELLOW}Erstelle Projekt-Verzeichnis...${NC}"
-mkdir -p /var/www/backup-monitor2
-
-# Projekt von GitHub klonen
-echo -e "${YELLOW}Klone Git Repository...${NC}"
-if git clone https://github.com/Herbertholzkopf/backup-monitor2.git /var/www/backup-monitor2; then
-    echo -e "${GREEN}Repository erfolgreich geklont${NC}"
-else
-    echo -e "${RED}Fehler beim Klonen des Repositories${NC}"
-    exit 1
-fi
-
 # Rechte des Verzeichnis anpassen
 chown -R www-data:www-data /var/www/backup-monitor2
 chmod -R 755 /var/www/backup-monitor
