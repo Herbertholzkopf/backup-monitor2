@@ -122,7 +122,7 @@ chmod 640 /var/www/backup-monitor2/log/*
 
 # Nginx Konfiguration erstellen
 echo -e "${YELLOW}Konfiguriere Nginx...${NC}"
-cat > /etc/nginx/sites-available/backup-monitor2 <<EOF
+cat > /etc/nginx/sites-available/backup-monitor2 <<'EOF'
 server {
     listen 80;
     server_name _;
