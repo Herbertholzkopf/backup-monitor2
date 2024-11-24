@@ -26,8 +26,9 @@ echo -e "${YELLOW}Python wird installiert...${NC}"
 apt-get install -y python3 python3-pymysql
 
 # Installation von weiteren Paketen
-echo -e "${YELLOW}MySQL, git, unzip, Nginx wird installiert...${NC}"
+echo -e "${YELLOW}MySQL, git, unzip, Nginx, php wird installiert...${NC}"
 apt-get install -y mysql-server git unzip nginx
+apt-get install -y nginx php-fpm php-mysql
 
 
 
@@ -114,7 +115,7 @@ echo -e "${GREEN}Datenbank und Benutzer erfolgreich erstellt.${NC}"
 
 # Rechte des Verzeichnis anpassen
 chown -R www-data:www-data /var/www/backup-monitor2
-chmod -R 755 /var/www/backup-monitor
+chmod -R 755 /var/www/backup-monitor2
 chown -R www-data:adm /var/www/backup-monitor2/log
 chmod 750 /var/www/backup-monitor2/log
 chmod 640 /var/www/backup-monitor2/log/*
@@ -128,21 +129,28 @@ server {
     root /var/www/backup-monitor2;
     index index.php index.html;
 
+    # Hauptlocation
     location / {
         try_files $uri $uri/ /index.php?$args;
     }
 
-    # Einbundung von php
+    # PHP-Verarbeitung
     location ~ \.php$ {
-        include fastcgi_params;
-        fastcgi_pass unix:/run/php/php7.4-fpm.sock; # Pfad auf die richige Version anpassen
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php/php-fpm.sock;
+        fastcgi_intercept_errors on;
     }
 
-    # Zugriff auf sensible Dateien verhindern (z.B. .htaccess)
-    location ~ /\.(ht|git) {
+    # Verhindern des Zugriffs auf versteckte Dateien
+    location ~ /\.(ht|git|py|env|config) {
         deny all;
+        return 404;
+    }
+
+    # Verhindern des direkten Zugriffs auf bestimmte Verzeichnisse
+    location ^~ /config/ {
+        deny all;
+        return 404;
     }
 
     # Logging
@@ -150,6 +158,7 @@ server {
     access_log /var/www/backup-monitor2/log/access.log;
 }
 EOF
+
 
 # Nginx Site verknüpfen und aktivieren
 ln -s /etc/nginx/sites-available/backup-monitor2 /etc/nginx/sites-enabled/

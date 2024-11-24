@@ -3,4 +3,4 @@
 DB_HOST = 'localhost'
 DB_USER = 'newuser'
 DB_PASSWORD = 'password'
-DB_NAME = 'backupmonitor'
+DB_NAME = 'backup_monitor2'
