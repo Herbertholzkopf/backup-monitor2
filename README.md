@@ -4,30 +4,27 @@
 
 # Installationsschritte:
 
-apt update
-apt install python3 python3-pymysql -y
+Installations-Skript von GitHub herunterladen:
+```
+wget https://raw.githubusercontent.com/Herbertholzkopf/backup-monitor2/refs/heads/main/install/install.sh
+```
 
+Skript ausführbar machen:
+```
+chmod +x install.sh
+```
 
-cd 
-mkdir -p /var/www/backup-monitor2/config
-cd /var/www/backup-monitor2
+Skript ausführen:
+```
+./install.sh
+```
 
-nano mail-to-database.py
+Bei der Einrichtung wird das Kennwort für die Datenbank festgelegt (root Bentzer und backup_user).
+Das Passwort für den backup_user muss unter /var/www/backup-monitor2/config in die database.py eingetragen werden.
+```
+nano /var/www/backup-monitor2/config/database.py
+```
 
-chmod +x /var/www/backup-monitor2/mail-to-database.py
-
-cd config
-nano database.py
-
-nano mail.py
-
-
-
-
-
-#################################
-# Ausführbar machen:
-chmod +x /var/www/backup-monitor2/mail-to-database.py
 
 
 #################################
@@ -36,28 +33,25 @@ chmod +x /var/www/backup-monitor2/mail-to-database.py
 
 
 
-# Test-Datenbank mit externer Erreichbarkeit (für die Entwicklung) erstellen
+# Test-Datenbank für externer Erreichbarkeit aktivieren (nur für die Entwicklung!)
 
-sudo apt update
-sudo apt install mysql-server
+```
+sudo mysql -u root -p
+```
 
-sudo mysql_secure_installation
---> externen root-Zugriff erlauben!
-
-sudo mysql
-
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'new_password';
-FLUSH PRIVILEGES;
-
-``CREATE USER 'newuser'@'%' IDENTIFIED BY 'password';
+```
+CREATE USER 'newuser'@'%' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';
 FLUSH PRIVILEGES;
-exit;``
+exit;
+```
 
-
-
+```
 sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+```
 
-Finden Sie die Zeile mit bind-address und kommentieren Sie sie aus oder ändern Sie sie zu bind-address = 0.0.0.0
+In der Zeile mit bind-address das # entfernen und die Zeile ändern auf: bind-address = 0.0.0.0
 
+```
 sudo systemctl restart mysql
+```
