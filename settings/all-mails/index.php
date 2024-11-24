@@ -328,7 +328,7 @@ $result = $conn->query($query);
             document.getElementById('mailDate').textContent = new Date(data.mail_date).toLocaleString('de-DE');
             document.getElementById('mailSender').textContent = data.sender_email;
             document.getElementById('mailSubject').textContent = data.subject;
-            document.getElementById('mailProcessed').textContent = data.processed ? 'Ja' : 'Nein';
+            document.getElementById('mailProcessed').textContent = data.processed === '1' || data.processed === true ? 'Ja' : 'Nein';
             document.getElementById('mailContent').textContent = data.content || 'Kein Inhalt verfügbar';
 
             // Backup-Job Informationen

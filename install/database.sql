@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS mails (
     date DATETIME NOT NULL,
     sender_email VARCHAR(255) NOT NULL,
     subject TEXT,
-    content TEXT,
+    content MEDIUMTEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     processed BOOLEAN DEFAULT FALSE
 );
