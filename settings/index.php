@@ -1,3 +1,6 @@
+<?php
+// kein php Skript, nur pures HTML :)
+?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
