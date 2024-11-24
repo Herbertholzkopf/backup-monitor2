@@ -61,6 +61,7 @@ $htmlContent = $parser->parse($markdownContent);
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #f3f4f6;
         }
         pre {
             background-color: #f4f4f4;
