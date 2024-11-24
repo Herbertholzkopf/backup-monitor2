@@ -49,10 +49,10 @@ sudo mysql
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'new_password';
 FLUSH PRIVILEGES;
 
-CREATE USER 'newuser'@'%' IDENTIFIED BY 'password';
+``CREATE USER 'newuser'@'%' IDENTIFIED BY 'password';
 GRANT ALL PRIVILEGES ON *.* TO 'newuser'@'%';
 FLUSH PRIVILEGES;
-exit;
+exit;``
 
 
 
