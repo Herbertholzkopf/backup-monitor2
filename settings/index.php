@@ -139,11 +139,21 @@
             <a href="/settings/unprocessed-mails" class="card">
                 <div class="card-header">
                     <div class="card-icon">
-                        <img src="./bug.png" alt="Backup Icon von https://thenounproject.com/creator/denovo-agency/">
+                        <img src="./list.png" alt="Backup Icon von https://thenounproject.com/creator/denovo-agency/">
                     </div>
                     <h2 class="card-title">Unverarbeitete Mails</h2>
                 </div>
                 <p class="card-description">Diese Mails wurde noch nicht weiter verarbeitet oder konnten keinem Job zugewiesen werden</p>
+            </a>
+
+            <a href="/settings/all-mails" class="card">
+                <div class="card-header">
+                    <div class="card-icon">
+                        <img src="./bug.png" alt="Backup Icon von https://thenounproject.com/creator/denovo-agency/">
+                    </div>
+                    <h2 class="card-title">Alle Mails</h2>
+                </div>
+                <p class="card-description">Liste aller gespeicherten Mails inkl. zugeordneter Backup-Jobs und Ergebnisse (für Troubleshooting)</p>
             </a>
         </div>
     </div>
